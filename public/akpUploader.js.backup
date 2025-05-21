@@ -1,0 +1,53 @@
+(function($) {
+    $.fn.akpUploader = function(){
+        //SET ID
+        var _id = this.attr('id');
+
+
+        this.append(`
+                    <div id="imageHolder_${_id}">
+                        <img id="preview_${_id}" class="img-fluid" style="max-height:100px;margin-bottom:10px;"/>
+                    </div>
+    
+                    <button id="uploadBtn_${_id}" type="button" class="btn btn-info">Upload New <i class="fa fa-cloud-upload"></i></button>
+    
+                    <button id="cancelBtn_${_id}" style="display:none;" type="button" class="btn btn-warning">Reset <i class="fa fa-undo"></i></button>
+    
+                    <input type="file" id="fileInput_${_id}" name="photo_${_id}" style="visibility:hidden;">
+                `);
+
+                $(`#uploadBtn_${_id}`).on('click',function(){
+                    $(`#fileInput_${_id}`).trigger('click');
+                });
+
+                $(`#cancelBtn_${_id}`).on('click', function(){
+                    $(`#preview_${_id}`).remove();
+                    $(`#imageHolder_${_id}`).append(`<img id="preview_${_id}" class="img-fluid" style="max-height:100px;margin-bottom:10px;"/>`);
+        
+                    $(`#fileInput_${_id}`).val('');
+                    $(`#uploadBtn_${_id}`).html( 'Upload New <i class="fa fa-cloud-upload"></i>' );
+                    $(`#cancelBtn_${_id}`).hide();
+                });
+            
+                $(`#fileInput_${_id}`).change(function(e) {
+                    if(this.files.length > 0)
+                    {
+                        var file = this.files[0];
+                        $( `#uploadBtn_${_id}` ).html( 'Change photo' );
+                        readUrl(e.currentTarget);
+                        $(`#cancelBtn_${_id}`).show();
+        
+                    }
+                });
+            
+                function readUrl (input) {
+                    var reader = new FileReader();
+                    
+                    reader.onload = function(e) {
+                        $(`#preview_${_id}`).attr('src', e.target.result);
+                    }
+                    
+                    reader.readAsDataURL(input.files[0]);
+                }   
+    }
+}(jQuery));

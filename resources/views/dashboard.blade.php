@@ -179,7 +179,7 @@
                         <div class="card text-white bg-dark mb-3" style="border-radius: 5px; background: black!important">
                             <div class="card-body"
                                 style="padding: 10px; display: flex; flex-direction: column; justify-content: center;align-items:center; border-radius: 5px;">
-                                <h5 class="card-title" style="color: white; font-size: 20px;">Withdraw Requestssss</h5>
+                                <h5 class="card-title" style="color: white; font-size: 20px;">Withdraw Request</h5>
                                 <p class="card-text" style="color: white;font-size: 25px;">{{$withdraw_request .  " " .$seller_current_currency_name}}</p>
                             </div>
                         </div>

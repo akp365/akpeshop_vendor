@@ -262,7 +262,7 @@
                                                     </div>
 
 
-                                                    
+
 
                                                 </td>
                                                 <td>{{ $order['payment_status'] }}</td>
@@ -478,32 +478,35 @@ function filterOptions() {
         'Returned'
     ];
 
-    let removalMap = {
-        'Returned': ['Placed', 'Cancel By Seller', 'Confirmed', 'Dispatched', 'Delivered'],
-        'Confirmed': ['Placed', 'Cancel By Seller'],
-        'Dispatched': ['Placed', 'Cancel By Seller', 'Confirmed'],
-        'Delivered': ['Placed', 'Cancel By Seller', 'Confirmed', 'Dispatched'],
-        'Placed': [],
-        'Cancel By Seller': ['Placed'],
+    // Define allowed transitions for each status
+    let allowedTransitions = {
+        'Placed': ['Cancel By Seller', 'Confirmed', 'Dispatched', 'Delivered'],
+        'Confirmed': ['Dispatched', 'Delivered'],
+        'Dispatched': ['Delivered'],
+        'Cancel By Seller': [],
+        'Delivered': [],
+        'Returned': []
     };
 
-    // First, reset all options
+    // Clear existing options
     selectBox.innerHTML = "";
-    serialArr.forEach(status => {
-        let option = document.createElement("option");
-        option.value = status;
-        option.textContent = status;
-        selectBox.appendChild(option);
-    });
 
-    // Remove the unwanted options
-    if (removalMap[hiddenStatus]) {
-        removalMap[hiddenStatus].forEach(toRemove => {
-            let optionToRemove = selectBox.querySelector(`option[value='${toRemove}']`);
-            if (optionToRemove) {
-                optionToRemove.remove();
-            }
+    // Add only allowed transitions based on current status
+    if (allowedTransitions[hiddenStatus]) {
+        allowedTransitions[hiddenStatus].forEach(status => {
+            let option = document.createElement("option");
+            option.value = status;
+            option.textContent = status;
+            selectBox.appendChild(option);
         });
+    }
+
+    // Set the current status as selected if no transitions are available
+    if (allowedTransitions[hiddenStatus].length === 0) {
+        let option = document.createElement("option");
+        option.value = hiddenStatus;
+        option.textContent = hiddenStatus;
+        selectBox.appendChild(option);
     }
 }
 

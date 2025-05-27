@@ -918,7 +918,6 @@ class OrderController extends Controller
                 // Create status history
                 $statusHistory = new OrderStatusHistory();
                 $statusHistory->order_id = $order->id;
-                $statusHistory->order_status = 'Completed';
                 $statusHistory->status_name = 'Completed';
                 $statusHistory->note = 'Order automatically marked as completed after 1 minute of delivery';
                 $statusHistory->save();

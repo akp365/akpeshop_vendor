@@ -370,7 +370,7 @@
                         @csrf
 
 
-                        <input type="text" id="statuus_hidden">
+                        <input type="text" id="statuus_hidden" style="display: none;">
 
                         <label for="orderStatus">Order Status:</label>
                         <select id="orderStatus" onchange="updateStatus()">

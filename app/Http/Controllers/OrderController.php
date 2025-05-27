@@ -893,6 +893,41 @@ class OrderController extends Controller
 
 
 
+    private function checkAndUpdateOrderStatus($order)
+    {
+        if ($order->order_status === 'Delivered') {
+            $deliveredTime = Carbon::parse($order->updated_at);
+            $currentTime = Carbon::now();
+            $minutesDifference = $currentTime->diffInMinutes($deliveredTime);
+
+            if ($minutesDifference >= 1) {
+                // Update Order status
+                $order->order_status = 'Completed';
+                $order->save();
+
+                // Update CheckoutItem status
+                $checkoutItems = CheckoutItem::where('checkout_id', $order->order_details_checkout_id)
+                    ->where('seller_id', $order->seller_id)
+                    ->get();
+
+                foreach ($checkoutItems as $item) {
+                    $item->order_status = 'Completed';
+                    $item->save();
+                }
+
+                // Create status history
+                $statusHistory = new OrderStatusHistory();
+                $statusHistory->order_id = $order->id;
+                $statusHistory->order_status = 'Completed';
+                $statusHistory->status_name = 'Completed';
+                $statusHistory->note = 'Order automatically marked as completed after 1 minute of delivery';
+                $statusHistory->save();
+            }
+        }
+        return $order;
+    }
+
+
 
 
     public function view(Request $request)
@@ -1001,6 +1036,9 @@ class OrderController extends Controller
 
 
         $orders = $orders->get()->map(function ($order) {
+            // Check and update order status
+            $order = $this->checkAndUpdateOrderStatus($order);
+
             $order->dubai_date_time = Carbon::parse($order->created_at)
                 ->timezone('Asia/Dubai')
                 ->format('d/m/Y , H:i');
@@ -1223,9 +1261,9 @@ class OrderController extends Controller
             $allCountries = Country::all();
             $allSellers = Seller::all();
             $allCurrency = Currency::all();
-    
+
             return view('orders.index', compact('allCountries', 'allSellers', 'allCurrency', 'orders', 'ordersWithDetails'));
-            
+
         }
 
 
@@ -1234,7 +1272,7 @@ class OrderController extends Controller
 
 
 
-        
+
 
 
         $allCountries = Country::all();

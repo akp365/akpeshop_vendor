@@ -100,8 +100,8 @@ class OrderController extends Controller
                 $orderId = $request->query('id');
                 $sellerId = $request->query('seller');
                 $order = Order::where('id', $orderId)->where('seller_id', $sellerId)->latest()->first();
-
-
+                // return $order;
+                $orderedCurrency = Currency::where('title', $order->currency)->latest()->first();
 
                 $orderDetails = OrderDetails::with([
                     'product_details' => function ($query) {
@@ -118,7 +118,7 @@ class OrderController extends Controller
 
 
 
-                return view('orders.details', compact('allCountries', 'orderDetails'));
+                return view('orders.details', compact('allCountries', 'orderDetails', 'orderedCurrency'));
             }
 
             abort(404);

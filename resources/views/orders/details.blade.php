@@ -91,8 +91,9 @@
                             $totalCommission = 0;
                             $totalPromoterFee = 0;
                             $totalVatOnFee = 0;
+                            $currencyRate = $orderedCurrency->usd_conversion_rate;
                         @endphp
-                
+
                         @foreach($orderDetails as $key => $order)
                         @php
                             $totalTax += $order['tax'];
@@ -105,13 +106,13 @@
                             <td>{{ $key + 1 }}</td>
                             <td>{{ $order['items_details'] }}</td>
                             <td>{{ $order['qty'] }}</td>
-                            <td>{{ $order['price'] }}</td>
-                            <td>{{ $order['tax'] }} ({{ $order['tax_type'] }})</td>
-                            <td>{{ $order['final_price'] }}</td>
-                            <td>{{ $order['product_price'] }}</td>
-                            <td>{{ $order['commison'] }}</td>
-                            <td>{{ $order['promoter_fee'] }}</td>
-                            <td>{{ $order['vat_on_fee'] }}</td>
+                            <td>{{ $order['price'] * $currencyRate }}</td>
+                            <td>{{ $order['tax'] * $currencyRate }} ({{ $order['tax_type'] }})</td>
+                            <td>{{ $order['final_price'] * $currencyRate }}</td>
+                            <td>{{ $order['product_price'] * $currencyRate }}</td>
+                            <td>{{ $order['commison'] * $currencyRate }}</td>
+                            <td>{{ $order['promoter_fee'] * $currencyRate }}</td>
+                            <td>{{ $order['vat_on_fee'] * $currencyRate }}</td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -127,7 +128,7 @@
                         </tr>
                     </tfoot>
                 </table>
-                
+
             </div>
         </main>
     </div>

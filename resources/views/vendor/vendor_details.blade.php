@@ -18,7 +18,7 @@
     }
 
 </style>
-    
+
     <div class="panel panel-default">
         <div class="panel-body">
             <!-- PRITABLE START -->
@@ -26,7 +26,7 @@
                 <form method="POST" action="{{ route('request-profile-update') }}">
                     @csrf
 
-                
+
                         <h4 class="page-section-heading">Personal Details</h4>
                         @if(in_array($vendor->account_status, array('active', 'inactive')))
                         <div class="row">
@@ -57,7 +57,7 @@
 
                                     <!-- CURRENT VALUE -->
                                     <input type="text" name="name" class="form-control" id="name" placeholder="Name" value="{{ $vendor->name }}" disabled>
-                                    
+
                                     <!-- SHOW PENDING CHANGE REQUEST IF ANY -->
                                     @if($infoChangeRequest && $infoChangeRequest->name !== NULL)
                                         <input type="text" class="form-control" style="color:blue;font-weight: bold;" value="Pending Change To: {{ $infoChangeRequest->name }}" disabled>
@@ -196,7 +196,7 @@
                                         <input type="text" class="form-control" style="color:blue;font-weight: bold;" value="Pending Change To: {{ $infoChangeRequest->company_name }}" disabled>
                                     @endif
                                 </div>
-                            </div>  
+                            </div>
                         </div>
 
                         <div class="row">
@@ -213,7 +213,7 @@
                                     @if($infoChangeRequest && $infoChangeRequest->shop_address !== NULL)
                                         <input type="text" class="form-control" style="color:blue;font-weight: bold;" value="Pending Change To: {{ $infoChangeRequest->shop_address }}" disabled>
                                     @endif
-                                </div>              
+                                </div>
                             </div>
 
                             <!-- COMPANY ADDRESS -->
@@ -229,7 +229,7 @@
                                     @if($infoChangeRequest && $infoChangeRequest->company_address !== NULL)
                                         <input type="text" class="form-control" style="color:blue;font-weight: bold;" value="Pending Change To: {{ $infoChangeRequest->company_address }}" disabled>
                                     @endif
-                                </div>              
+                                </div>
                             </div>
                         </div>
 
@@ -240,7 +240,7 @@
                                 <div class="form-group form-control-default required">
                                     <!-- LABEL -->
                                     <label for="account_type">Account Type</label>
-                                    
+
                                     <!-- CURRENT VALUE & DROPDOWN -->
                                     <select style="width: 100%;" data-toggle="select2" name="account_type" id="account_type" data-placeholder="Select account type .." data-allow-clear="false" required  @if( $vendor->account_type == 'business' ) disabled @endif>
                                         <option></option>
@@ -279,7 +279,7 @@
                                 <div class="form-group form-control-default required">
                                     <!-- LABEL -->
                                     <label for="currency">Currency</label>
-                                    
+
                                      <!-- CURRENT VALUE -->
                                      <input type="text" name="currency" class="form-control" id="currency" placeholder="Currency" value="{{ $vendor->currency->title }}" required>
                                 </div>
@@ -288,8 +288,8 @@
                             <!-- PHONE -->
                             <div class="col-md-6"></div>
                         </div>
-                    
-                    
+
+
 
                         <!-- CONTROLS -->
                         <div class="row text-center nonPrintables">
@@ -619,14 +619,16 @@
                         </thead>
                         <tbody>
                             @foreach($vendor->categoryRequests->where('status', 'pending') as $key => $requestedCat)
+                            {{-- {{$vendor->categoryRequests}} --}}
                             <tr>
-                                <td> {{ $requestedCat->category->title }} </td>
+                                {{-- <td> {{ $requestedCat->category->title }} </td> --}}
+                                <td> SUBJECT TO APPROVAL </td>
                                 <td> SUBJECT TO APPROVAL </td>
                                 <td> SUBJECT TO APPROVAL </td>
                             </tr>
                             @endforeach
                         </tbody>
-                    </table> 
+                    </table>
                 @endif
             </div>
         </div>
@@ -684,12 +686,12 @@
             </div>
         </div>
     </div>
-    
+
 @endsection
 
 @section('scripts')
 <script type="text/javascript" src="{{ asset('chosen/chosen.jquery.js') }}"></script>
-            
+
 <script>
     //INITIATE CHOSEN COMPONENTS
     $('#modalToSelectNewCat').on('shown.bs.modal', function () {
@@ -833,7 +835,7 @@
     //ON PAGE LOAD
     $(document).ready( function(){
         //SET CITY DROPDOWN
-        setCityDropdown();    
+        setCityDropdown();
     });
 
     //WHEN COUNTRY IS CHANGED, UPDATE DATA PROVIDER FOR CITY DROPDOWN
@@ -861,7 +863,7 @@
             });
         }
         else
-        {   
+        {
             ajaxUrl = "{{ route('cities-for-country', ['countryId' => 'COUNTRY_ID']) }}";
             ajaxUrl = ajaxUrl.replace("COUNTRY_ID",countryId);
             $.ajax({
@@ -874,11 +876,11 @@
                     data: JSON.parse(data) ,
                 }).trigger('change');
                 }
-            });     
+            });
         }
 
 
-        
+
     }
 
     //FUNCTION TO PRINT VENDOR-DETAILS
@@ -890,7 +892,7 @@
             },
             afterPrint: function(){
                 $('.nonPrintables').show();
-            }      
+            }
         });
     }
 
@@ -918,7 +920,7 @@
                 animation: 'scale',
                 animationClose: 'top',
                 closeIcon: true,
-                backgroundDismiss: true, 
+                backgroundDismiss: true,
                 theme: 'material',
                 boxWidth: '85%',
                 useBootstrap: false,
@@ -981,7 +983,7 @@
                     waitPopUp.close();
                     $.alert({title:'Warning',content:'Something went wrong, please try again later',icon: 'fa fa-warning',type:'red'});
                 }
-            }); 
+            });
         }
     }
 
@@ -1062,7 +1064,7 @@
                     waitPopUp.close();
                     $.alert({title:'Warning',content:'Something went wrong, please try again later',icon: 'fa fa-warning',type:'red'});
                 }
-            }); 
+            });
         }
 
     }

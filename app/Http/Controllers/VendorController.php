@@ -36,7 +36,7 @@ use Illuminate\Support\Facades\DB;
 class VendorController extends Controller
 {
 
-    
+
     public function SendTicketMessage(Request $request) {
         $ticket_id = $request->ticket_id;
         $message = $request->message;
@@ -54,9 +54,9 @@ class VendorController extends Controller
     public function OpenTicketView(Request $request) {
         $unique_id = $request->ticket_unique_id;
         $openTicketId = OpenTicket::where("unique_id", $unique_id)->first();
-    
+
         $user = Auth::user();
-    
+
         $openTicket = OpenTicketMessage::where('ticket_id', $openTicketId->id)->get();
 
 
@@ -73,12 +73,12 @@ class VendorController extends Controller
             ->latest()
             ->get()
             ->unique('ticket_id');
-    
+
         $tickets = $assignedTickets->pluck('tickets')->flatten();
-    
+
         return view('open_ticket_list', compact('tickets'));
     }
-    
+
 
 
     public function updateOrder(Request $request)
@@ -521,7 +521,7 @@ class VendorController extends Controller
 
 
 
-    
+
     public function convertCurrency($currentCurrency, $amount, $targetCurrency)
     {
         // Find exchange rates for both currencies
@@ -592,12 +592,12 @@ class VendorController extends Controller
         //COUNTRY LIST
         $countryList = Country::whereIn('country_name', array("Bangladesh"))->orderBy('country_name')->get();
 
-        /** 
+        /**
          * PREPARE CATEGORY LIST ARRAY FOR 'ADD NEW CATEGORY' DROPDOWN LIST
          * EXISTING CATEGORIES AND ALREADY REQUESTED CATEGORIES WILL BE EXCLUDED FROM THAT LIST
          **/
 
-        //EXISTING CATEGORIES 
+        //EXISTING CATEGORIES
         $vendorCategories = $vendor->categories->pluck('category_id')->toArray();
 
         //ALREADY REQUESTED CATEGORIES
@@ -793,7 +793,7 @@ class VendorController extends Controller
     {
         //VERIFY AJAX
         if ($request->ajax()) {
-            //GRAB REQUESTED CATEGORY ID'S FROM INPUT   
+            //GRAB REQUESTED CATEGORY ID'S FROM INPUT
             $newCategories = $request->input('categories');
 
             try {

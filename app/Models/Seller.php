@@ -40,7 +40,7 @@ class Seller extends Authenticatable
     //     return $this->belongsTo(Currency::class,'currency_id', 'id');
     // }
 
-    
+
     // public function orders()
     // {
     //     return $this->hasMany(Order::class, 'seller_id', 'id')->select('id','seller_id', 'invoice_no', 'invoice_value');
@@ -59,7 +59,7 @@ class Seller extends Authenticatable
 
 
 
-    
+
     public function orders()
     {
         return $this->hasMany(Order::class, 'seller_id', 'id')->select('id','seller_id', 'invoice_no', 'invoice_value');

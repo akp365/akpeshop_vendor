@@ -545,7 +545,7 @@ class OrderController extends Controller
             // Store the raw numeric value for calculations
             $order->seller_payable_money_raw = $sellerPayablePrice;
             // Format the display value
-            $order->seller_payable_money = number_format($sellerPayablePrice, 2);
+            $order->seller_payable_money = number_format($sellerPayablePrice * $currency_rate->usd_conversion_rate, 2);
 
             $subcidy = 0;
             if ($order->payment_method == 'credit/debit card') {
@@ -559,7 +559,7 @@ class OrderController extends Controller
             } elseif ($order->payment_method == 'gift') {
                 $subcidy = $order->total_invoice_value + $order->total_discount;
             }
-            $order->subcidy = round($subcidy, 2);
+            $order->subcidy = number_format($subcidy * $currency_rate->usd_conversion_rate, 2);
 
 
             // Use the raw numeric value for calculations
